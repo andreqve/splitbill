@@ -16,7 +16,7 @@ export default function BillSetup() {
   const [isScanning, setIsScanning] = useState(false);
   const [scanProgress, setScanProgress] = useState(0);
   const fileInputRef = useRef(null);
-  
+
   // Create 2 default input rows instead of 5
   const [inputRows, setInputRows] = useState([
     { id: 1, name: '', quantity: '', price: '' },
@@ -24,7 +24,7 @@ export default function BillSetup() {
   ]);
 
   const handleInputChange = (rowId, field, value) => {
-    setInputRows(prev => prev.map(row => 
+    setInputRows(prev => prev.map(row =>
       row.id === rowId ? { ...row, [field]: value } : row
     ));
   };
@@ -34,15 +34,15 @@ export default function BillSetup() {
     if (row.name && row.quantity && row.price) {
       dispatch({
         type: actions.ADD_ITEM,
-        payload: { 
-          name: row.name, 
-          quantity: parseInt(row.quantity) || 1, 
-          price: parseFloat(row.price) || 0 
+        payload: {
+          name: row.name,
+          quantity: parseInt(row.quantity) || 1,
+          price: parseFloat(row.price) || 0
         }
       });
-      
+
       // Clear the row
-      setInputRows(prev => prev.map(r => 
+      setInputRows(prev => prev.map(r =>
         r.id === rowId ? { ...r, name: '', quantity: '', price: '' } : r
       ));
     }
@@ -81,7 +81,7 @@ export default function BillSetup() {
   const parseReceiptText = (text) => {
     const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
     const items = [];
-    
+
     // Enhanced patterns for Indonesian receipts
     const pricePatterns = [
       /(.+?)\s+x\s*(\d+)\s+(\d+[.,]?\d*)\s*$/i,    // Item x1 25000 format
@@ -93,15 +93,15 @@ export default function BillSetup() {
 
     for (const line of lines) {
       // Skip lines that are clearly not items
-      if (line.toLowerCase().includes('total') || 
-          line.toLowerCase().includes('subtotal') ||
-          line.toLowerCase().includes('pajak') ||
-          line.toLowerCase().includes('tax') ||
-          line.toLowerCase().includes('service') ||
-          line.toLowerCase().includes('receipt') ||
-          line.toLowerCase().includes('terima kasih') ||
-          line.toLowerCase().includes('thank') ||
-          line.length < 3) {
+      if (line.toLowerCase().includes('total') ||
+        line.toLowerCase().includes('subtotal') ||
+        line.toLowerCase().includes('pajak') ||
+        line.toLowerCase().includes('tax') ||
+        line.toLowerCase().includes('service') ||
+        line.toLowerCase().includes('receipt') ||
+        line.toLowerCase().includes('terima kasih') ||
+        line.toLowerCase().includes('thank') ||
+        line.length < 3) {
         continue;
       }
 
@@ -109,7 +109,7 @@ export default function BillSetup() {
         const match = line.match(pattern);
         if (match) {
           let itemName, price, quantity = 1;
-          
+
           if (match.length === 4) {
             // Format: Item x1 25000
             itemName = match[1].trim();
@@ -120,12 +120,12 @@ export default function BillSetup() {
             itemName = match[1].trim();
             price = match[2].replace(/[.,]/g, '');
           }
-          
+
           // Handle 'k' suffix (thousands)
           if (price.toLowerCase().includes('k')) {
             price = price.toLowerCase().replace('k', '000');
           }
-          
+
           // Clean up item name
           const cleanName = itemName
             .replace(/^\d+\s*[x×]\s*/i, '') // Remove quantity prefix
@@ -133,7 +133,7 @@ export default function BillSetup() {
             .trim();
 
           const numericPrice = parseFloat(price);
-          
+
           if (cleanName.length > 2 && numericPrice > 0) {
             items.push({
               name: cleanName,
@@ -166,7 +166,7 @@ export default function BillSetup() {
 
       const extractedText = result.data.text;
       console.log('Extracted text:', extractedText);
-      
+
       const parsedItems = parseReceiptText(extractedText);
       console.log('Parsed items:', parsedItems);
 
@@ -225,7 +225,7 @@ export default function BillSetup() {
     try {
       const response = await fetch('/api/ocr');
       const data = await response.json();
-      
+
       // Add mock items to the bill
       data.items.forEach(item => {
         dispatch({
@@ -290,18 +290,18 @@ export default function BillSetup() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          
+
           {/* Receipt Scanner Section */}
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-3">
               <Camera className="h-5 w-5 text-indigo-600" />
               <h3 className="font-medium text-indigo-800">Scan Receipt 📸</h3>
             </div>
-            
+
             <p className="text-sm text-gray-600">
               Upload foto receipt buat otomatis detect item dan harga!
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 onClick={triggerFileSelect}
@@ -320,7 +320,7 @@ export default function BillSetup() {
                   </>
                 )}
               </Button>
-              
+
               <Button
                 onClick={handleMockScan}
                 disabled={isScanning}
@@ -343,7 +343,7 @@ export default function BillSetup() {
 
             {isScanning && (
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
+                <div
                   className="bg-indigo-600 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${scanProgress}%` }}
                 ></div>
@@ -357,7 +357,7 @@ export default function BillSetup() {
               onChange={handleFileSelect}
               className="hidden"
             />
-            
+
             <div className="text-xs text-gray-500">
               💡 <strong>Tips:</strong> Foto yang jelas dan terang akan memberikan hasil scan yang lebih akurat!
             </div>
@@ -376,7 +376,7 @@ export default function BillSetup() {
               <Edit2 className="h-5 w-5 text-blue-600" />
               <h3 className="font-medium text-blue-800">Tambah Manual ✍️</h3>
             </div>
-            
+
             <div className="space-y-3">
               {inputRows.map((row) => (
                 <div key={row.id} className="grid grid-cols-1 md:grid-cols-5 gap-3 p-4 bg-white rounded-lg border border-gray-200 hover:border-blue-300 transition-colors">
@@ -411,22 +411,29 @@ export default function BillSetup() {
                     />
                   </div>
                   <div>
-                    <Button 
+                    <Button
                       onClick={() => handleAddItem(row.id)}
                       disabled={!isRowComplete(row)}
-                      className={`w-full ${
-                        isRowComplete(row) 
-                          ? 'bg-emerald-600 hover:bg-emerald-700' 
+                      className={`w-full flex items-center justify-center ${isRowComplete(row)
+                          ? 'bg-emerald-600 hover:bg-emerald-700'
                           : 'bg-gray-300 cursor-not-allowed'
-                      }`}
+                        }`}
+                      aria-label="Tambah Item"
                     >
-                      <Plus className="h-4 w-4" />
+                      <Plus
+                        className={`h-5 w-5 transition-colors ${isRowComplete(row)
+                            ? 'text-emerald-50 drop-shadow'
+                            : 'text-gray-900 drop-shadow-sm'
+                          }`}
+                        aria-hidden="true"
+                      />
                     </Button>
+
                   </div>
                 </div>
               ))}
             </div>
-            
+
             <div className="text-center text-sm text-gray-500 mt-4">
               💡 <strong>Tips:</strong> Isi semua kolom terus Enter, atau tombol + buat nambahin!
             </div>
@@ -519,7 +526,7 @@ export default function BillSetup() {
                 </div>
               ))}
             </div>
-            
+
             {state.items.length > 0 && (
               <div className="mt-6 p-4 bg-gradient-to-r from-emerald-100 to-green-100 rounded-lg border-2 border-emerald-200">
                 <div className="flex justify-between items-center">
