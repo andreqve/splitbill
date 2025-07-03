@@ -85,25 +85,21 @@ function BillSplitApp() {
       {/* Background stickers - emoji */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute top-[12%] left-[8%] opacity-20 blur-sm select-none text-7xl">🍩</div>
-        <div className="absolute top-[65%] left-[85%] opacity-20 blur-sm select-none text-8xl">🍰</div>
-        <div className="absolute top-[30%] left-[60%] opacity-15 blur-sm select-none text-8xl">🍕</div>
-        <div className="absolute top-[70%] left-[12%] opacity-20 blur-sm select-none text-7xl">🥤</div>
-        <div className="absolute top-[40%] left-[35%] opacity-10 blur-md select-none text-9xl">☕</div>
+        <div className="absolute top-[65%] left-[85%] opacity-20 blur-sm select-none text-8xl">🍕</div>
+        <div className="absolute top-[30%] left-[60%] opacity-15 blur-sm select-none text-8xl">🥤</div>
+        <div className="absolute top-[70%] left-[12%] opacity-20 blur-sm select-none text-7xl">☕</div>
       </div>
       <div className="container mx-auto px-4 py-8 max-w-3xl md:max-w-4xl relative z-10">
         {/* HEADER BARU */}
         <header className="mb-12 mt-3 relative z-10 flex flex-col items-center gap-3">
-          {/* Emoji Donat ONLY on mobile */}
-          <div className="flex items-center gap-2 md:hidden">
-            <span className="text-4xl">🍩</span>
-          </div>
           {/* Emoji Lengkap only on md+ */}
-          <div className="hidden md:flex items-center gap-2">
-            <span className="text-4xl">🍩</span>
-            <span className="text-4xl">🥤</span>
-            <span className="text-4xl">🍰</span>
-            <span className="text-4xl">🍕</span>
+          <div className="flex items-center gap-2">
+            <span className="text-4xl spin-slow inline-block">🍩</span>
+            <span className="text-4xl spin-reverse inline-block">🥤</span>
+            <span className="text-4xl spin-slow inline-block">🍗</span>
+            <span className="text-4xl spin-super-slow inline-block">🍕</span>
           </div>
+
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 drop-shadow text-center mt-2">
             Split Bill Dong!
           </h1>
@@ -132,10 +128,10 @@ function BillSplitApp() {
                     <div className="flex flex-col items-center gap-2">
                       <div
                         className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${isCompleted
-                            ? 'bg-green-500 text-white'
-                            : isActive
-                              ? 'bg-blue-500 text-white'
-                              : 'bg-gray-200 text-gray-600'
+                          ? 'bg-green-500 text-white'
+                          : isActive
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-gray-200 text-gray-600'
                           }`}
                       >
                         <Icon className="h-5 w-5" />
@@ -207,13 +203,13 @@ function BillSplitApp() {
         {/* FOOTER BARU */}
         <footer className="mt-16 text-center text-xs md:text-sm text-gray-400 relative z-10 flex flex-col items-center gap-2">
           <div className="flex items-center justify-center gap-1">
-            <span className="text-lg">☕</span>
+            <span className="text-lg">🍬</span>
             <span className="text-lg">🍩</span>
             <span className="text-lg">🍰</span>
             <span className="text-lg">🍕</span>
           </div>
           <p>
-            Built with 🍬 by{' '}
+            Built with ☕ by{' '}
             <a
               href="https://x.com/andreqve"
               className="text-emerald-500 hover:underline"

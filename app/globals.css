@@ -4,6 +4,27 @@ html {
   font-family: 'DM Sans', sans-serif;
 }
 
+@layer utilities {
+  .spin-slow {
+    animation: spin 3s linear infinite;
+  }
+  .spin-slower {
+    animation: spin 5s linear infinite;
+  }
+  .spin-reverse {
+    animation: spin 3.5s linear infinite reverse;
+  }
+  .spin-super-slow {
+    animation: spin 8s linear infinite;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
