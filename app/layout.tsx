@@ -1,12 +1,17 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { DM_Sans } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin'] });
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Split Bill Dong! - Bagi Tagihan Bareng Temen',
-  description: 'Daripada ribut soal duit, mending pake tools ini aja buat bagi tagihan dengan adil. Gampang banget!',
+  description:
+    'Daripada ribut soal duit, mending pake tools ini aja buat bagi tagihan dengan adil. Gampang banget!',
 };
 
 export default function RootLayout({
@@ -15,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id">
-      <body className={inter.className}>{children}</body>
+    <html lang="id" className={dmSans.className}>
+      <body>{children}</body>
     </html>
   );
 }

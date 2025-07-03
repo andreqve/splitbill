@@ -1,47 +1,51 @@
 import { NextResponse } from 'next/server';
 
+// This file acts as a fake server endpoint for the "Demo Scan" feature.
+// It simulates what a real OCR server would return after processing an image.
+
 export async function GET() {
-  // Simulate processing delay
+  // Simulate a network processing delay to make the demo feel more realistic.
   await new Promise(resolve => setTimeout(resolve, 1000));
 
-  // Mock OCR result with Indonesian dishes
+  // **THE FIX**: This is the original list of items from your file,
+  // but with the "id" field removed from each object.
+  // This ensures the data structure perfectly matches what the BillContext's
+  // ADD_ITEM action is expecting.
   const mockItems = [
     {
-      id: 1,
       name: "Nasi Goreng",
       quantity: 1,
       price: 25000
     },
     {
-      id: 2,
       name: "Es Teh Tawar",
       quantity: 1,
       price: 3000
     },
     {
-      id: 3,
       name: "Kwetiau",
       quantity: 1,
       price: 30000
     },
     {
-      id: 4,
       name: "Air Mineral",
       quantity: 1,
       price: 3000
     }
   ];
 
+  // The response now only contains the `items` array.
+  // The BillSetup component will receive this and correctly add the items to the bill.
   return NextResponse.json({
-    success: true,
     items: mockItems,
-    message: "Receipt scanned successfully"
   });
 }
 
+// NOTE: The POST function from your original file is not used by the "Demo Scan"
+// button, which uses a GET request. It can be kept for future use or removed.
+// For clarity, I am including it here as it was in your file.
 export async function POST(request) {
   try {
-    // In a real implementation, you would process the uploaded image here
     const formData = await request.formData();
     const file = formData.get('receipt');
     
@@ -52,35 +56,13 @@ export async function POST(request) {
       );
     }
 
-    // Simulate processing delay
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // Return Indonesian dishes for demonstration
     const mockItems = [
-      {
-        id: 1,
-        name: "Nasi Goreng",
-        quantity: 1,
-        price: 25000
-      },
-      {
-        id: 2,
-        name: "Es Teh Tawar",
-        quantity: 1,
-        price: 3000
-      },
-      {
-        id: 3,
-        name: "Kwetiau",
-        quantity: 1,
-        price: 30000
-      },
-      {
-        id: 4,
-        name: "Air Mineral",
-        quantity: 1,
-        price: 3000
-      }
+      { name: "Nasi Goreng", quantity: 1, price: 25000 },
+      { name: "Es Teh Tawar", quantity: 1, price: 3000 },
+      { name: "Kwetiau", quantity: 1, price: 30000 },
+      { name: "Air Mineral", quantity: 1, price: 3000 }
     ];
 
     return NextResponse.json({
