@@ -301,7 +301,7 @@ Jangan lupa bayar ya! 😊
                   </div>
                 ) : (
                   <div className="text-center py-8 text-gray-500">
-                    <p>Wah, {participant.name} ga bayar apa-apa nih! Beruntung banget 😄</p>
+                    <p>Wah, {participant.name} ga bayar apa-apa nih! Puasa apa makan gratis? 😄</p>
                   </div>
                 )}
               </CardContent>
