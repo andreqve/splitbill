@@ -299,7 +299,7 @@ export default function BillSetup() {
             </div>
             
             <p className="text-sm text-gray-600">
-              Upload foto receipt buat otomatis detect item dan harga! Atau coba demo scan.
+              Upload foto receipt buat otomatis detect item dan harga!
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3">
