@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     site: '@andreqve',
-    title: 'Split Bill Dong! - Aplikasi Bagi Tagihan & Patungan',
+    title: 'Aplikasi Split Bill - Bagi Tagihan & Patungan: Split Bill Dong!',
     description: 'Tools split bill & bagi tagihan digital buat patungan bareng teman. Bagi uang, pembayaran, atau pengeluaran bareng jadi gampang!',
     images: ['https://sb.monsy.app/splitbilldong.png'], // Ganti sesuai gambar kamu
   },
