@@ -1,8 +1,9 @@
+// File: context/BillContext.jsx (Updated)
 'use client';
 
 import { createContext, useContext, useReducer } from 'react';
 
-// 1. Define all possible actions to avoid typos
+// 1. Definisikan semua kemungkinan actions untuk menghindari salah ketik
 const actions = {
   SET_BILL_NAME: 'SET_BILL_NAME',
   ADD_ITEM: 'ADD_ITEM',
@@ -14,20 +15,20 @@ const actions = {
   SET_TAX: 'SET_TAX',
   SET_TIP: 'SET_TIP',
   SET_DISCOUNT: 'SET_DISCOUNT',
-  RESET_STATE: 'RESET_STATE',
+  RESET_STATE: 'RESET_STATE', // <-- Action baru ditambahkan
 };
 
-// 2. Define the initial, clean state of the application
+// 2. Definisikan state awal yang bersih untuk aplikasi
 const initialState = {
   billName: '',
   items: [],
   participants: [],
-  tax: { amount: 11, isPercentage: true }, // Default tax to 11%
+  tax: { amount: 11, isPercentage: true }, // Pajak default 11%
   tip: { amount: 0, isPercentage: false },
   discount: { amount: 0, isPercentage: false },
 };
 
-// 3. The Reducer: This is the brain of your state management
+// 3. Reducer: Ini adalah "otak" dari manajemen state Anda
 const billReducer = (state, action) => {
   switch (action.type) {
     case actions.SET_BILL_NAME:
@@ -37,7 +38,7 @@ const billReducer = (state, action) => {
       const newItem = {
         id: `item_${Date.now()}_${Math.random()}`,
         ...action.payload,
-        assignedTo: [], // **CRITICAL**: Each new item must get its OWN assignment array
+        assignedTo: [], // **PENTING**: Setiap item baru harus mendapatkan array assignment-nya sendiri
       };
       return { ...state, items: [...state.items, newItem] };
 
@@ -66,7 +67,7 @@ const billReducer = (state, action) => {
       return {
         ...state,
         participants: state.participants.filter(p => p.id !== action.payload),
-        // Also remove the participant from any item they were assigned to
+        // Hapus juga peserta dari setiap item yang ditugaskan padanya
         items: state.items.map(item => ({
           ...item,
           assignedTo: item.assignedTo.filter(id => id !== action.payload),
@@ -74,10 +75,10 @@ const billReducer = (state, action) => {
       };
 
     case actions.ASSIGN_ITEM:
-      // **CRITICAL FIX**: This ensures immutability. It maps over the items array,
-      // creating a new array. It only modifies the one specific item that needs
-      // to be changed, returning a new object for it. All other items are
-      // returned as they were, preventing side effects.
+      // **PERBAIKAN PENTING**: Ini memastikan imutabilitas (immutability).
+      // Kode ini memetakan array item, membuat array baru. Ia hanya memodifikasi
+      // satu item spesifik yang perlu diubah, mengembalikan objek baru untuknya.
+      // Semua item lain dikembalikan apa adanya, mencegah efek samping (side effects).
       return {
         ...state,
         items: state.items.map(item => {
@@ -95,6 +96,7 @@ const billReducer = (state, action) => {
     case actions.SET_DISCOUNT:
       return { ...state, discount: action.payload };
     
+    // <-- Logika untuk action baru
     case actions.RESET_STATE:
       return { ...initialState };
 
@@ -103,15 +105,15 @@ const billReducer = (state, action) => {
   }
 };
 
-// 4. Create the actual React Context
+// 4. Buat Context React yang sebenarnya
 const BillContext = createContext();
 
-// 5. Create the Provider Component
-// This component will wrap your app and provide the state to all children
+// 5. Buat Komponen Provider
+// Komponen ini akan membungkus aplikasi Anda dan menyediakan state ke semua turunannya
 export const BillProvider = ({ children }) => {
   const [state, dispatch] = useReducer(billReducer, initialState);
 
-  // Helper functions (selectors) to get calculated values from state
+  // Fungsi bantuan (selectors) untuk mendapatkan nilai yang dihitung dari state
   const getSubtotal = () => state.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   
   const getTaxAmount = () => {
@@ -145,7 +147,7 @@ export const BillProvider = ({ children }) => {
     });
     
     const overallSubtotal = getSubtotal();
-    // Calculate the participant's proportion of the bill to distribute tax/tip fairly
+    // Hitung proporsi peserta dari tagihan untuk mendistribusikan pajak/tip secara adil
     const proportion = overallSubtotal > 0 ? participantSubtotal / overallSubtotal : 0;
     
     const taxShare = proportion * getTaxAmount();
@@ -163,7 +165,7 @@ export const BillProvider = ({ children }) => {
     };
   };
 
-  // The value that will be available to all consuming components
+  // Nilai yang akan tersedia untuk semua komponen yang menggunakannya
   const value = { 
     state, 
     dispatch, 
@@ -179,8 +181,8 @@ export const BillProvider = ({ children }) => {
   return <BillContext.Provider value={value}>{children}</BillContext.Provider>;
 };
 
-// 6. Custom Hook for easy consumption
-// Instead of importing useContext and BillContext everywhere, components can just use useBill()
+// 6. Custom Hook untuk penggunaan yang mudah
+// Daripada mengimpor useContext dan BillContext di mana-mana, komponen bisa langsung menggunakan useBill()
 export const useBill = () => {
   const context = useContext(BillContext);
   if (context === undefined) {
